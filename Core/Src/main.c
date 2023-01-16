@@ -56,6 +56,11 @@ static void MX_SPI1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 extern void initialise_monitor_handles(void);
+#ifdef DEBUG
+#define debug_print printf
+#else
+#define debug_print(...)
+#endif
 
 float ABS(float input){
 	float output_val = input;
@@ -73,7 +78,9 @@ float ABS(float input){
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+  #ifdef DEBUG
   initialise_monitor_handles();
+  #endif
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -127,7 +134,7 @@ if(BSP_GYRO_Init() != HAL_OK)
 	zval = buffer[2];
 	xval = ABS(xval);
 	yval = ABS(yval);
-	printf("xval:%fl, yval:%fl\n", xval, yval);
+	debug_print("xval:%f, yval:%f \n", xval, yval);
 	 if(xval>yval)
 	  {
 	    if(buffer[0] > 5000.0f)
